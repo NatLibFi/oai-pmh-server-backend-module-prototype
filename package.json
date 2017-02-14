@@ -34,6 +34,7 @@
 		"publish-to-npm": "npm install && npm run lint && npm test && npm run coverage && npm publish"
 	},
 	"dependencies": {
+		"babel-polyfill": "^6.23.0"
 	},
 	"devDependencies": {
 		"git-scripts": "^0.2.1",
