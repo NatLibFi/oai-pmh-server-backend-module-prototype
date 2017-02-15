@@ -46,8 +46,8 @@ describe('index', () => {
 		var obj = testContext.factory();
 
 		it('Should return the expected object', () => {
-			expect(obj).to.respondTo('getCapabilities').and.to
-			.respondTo('getEarliestSupportedDate').and.to
+			expect(obj).to
+			.respondTo('getCapabilities').and.to
 			.respondTo('getRecord').and.to
 			.respondTo('getMetadataFormats').and.to
 			.respondTo('getSets').and.to
@@ -57,18 +57,12 @@ describe('index', () => {
 
 		describe('object', () => {
 			describe('#getCapabilities', () => {
-				it('Should return an instance of capabilities', () => {
-					var capabilities = obj.getCapabilities();
-					expect(capabilities).to.be.an('object').and.to.contain.all.keys(['deletedRecordsSupport', 'harvestingGranularity']);
-					expect(capabilities.deletedRecordsSupport).to.be.a('number');
-					expect(capabilities.harvestingGranularity).to.be.a('number');
-				});
-			});
-
-			describe('#getEarliestSupportedDate', () => {
-				it('Should resolve with a Date', () => {
-					return obj.getEarliestSupportedDate().then(result => {
-						expect(Object.isPrototypeOf.call(Date.prototype, result)).to.be.true;
+				it('Should resolve with an instance of capabilities', () => {
+					return obj.getCapabilities().then(capabilities => {
+						expect(capabilities).to.be.an('object').and.to.contain.all.keys(['deletedRecordsSupport', 'harvestingGranularity', 'earliestDatestamp']);
+						expect(capabilities.deletedRecordsSupport).to.be.a('number');
+						expect(capabilities.harvestingGranularity).to.be.a('number');
+						expect(Object.isPrototypeOf.call(Date.prototype, capabilities.earliestDatestamp)).to.be.true;
 					});
 				});
 			});

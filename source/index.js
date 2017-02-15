@@ -28,6 +28,53 @@
 
 /* eslint-disable no-unused-vars */
 
+/**
+* @typedef {Object} metadataFormat
+* @property {string} prefix
+* @property {string} url
+*/
+
+/**
+* @typedef {number} error
+* @desc A bit field consisting of {@link ERRORS} values
+*/
+
+/**
+* @typedef {Object} set
+* @property {string} spec
+* @property {string} name
+* @property {string} [description]
+*/
+
+/**
+* @typedef {Object} flowControl
+* @property {string} resumptionToken
+* @property {Date} [expirationDate]
+* @property {number} [completeListSize]
+* @property {number} [cursor]
+*/
+
+/**
+* @external {Document} https://developer.mozilla.org/en-US/docs/Web/API/Document
+*/
+/**
+* @typedef {Object} record
+* @property {string} identifier
+* @property {Date} timestamp
+* @property {boolean} [deleted]
+* @property {Document} [metadata]
+* @property {string[]} [setSpec] - An array of {@link set} specs
+*/
+
+/**
+* @typedef {Object} backendModule
+* @property {getCapabilities} getCapabilities - Get capabilities of the backend module
+* @property {getSets} getSets - Get the sets the backend supports
+* @property {getRecords} getRecords - xxx
+* @property {getIdentifiers} getIdentifiers - xxx
+* @property {getRecord} getRecord - xxx
+*/
+
 'use strict';
 
 import 'babel-polyfill'; // eslint-disable-line import/no-unassigned-import
@@ -59,68 +106,6 @@ export const METADATA_FORMAT_DC = {
 	schema: 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd',
 	namespace: 'http://www.openarchives.org/OAI/2.0/oai_dc/'
 };
-/**
-* @typedef {number} error
-* @desc A bit field consisting of {@link ERRORS} values
-*/
-
-/**
-* @typedef {Object} metadataFormat
-* @property {string} prefix
-* @property {string} url
-*/
-
-/**
-* @typedef {Object} set
-* @property {string} spec
-* @property {string} name
-* @property {string} [description]
-*/
-
-/**
-* @typedef {Object} flowControl
-* @property {string} resumptionToken
-* @property {Date} [expirationDate]
-* @property {number} [completeListSize]
-* @property {number} [cursor]
-*/
-
-/**
-* @external {Document} https://developer.mozilla.org/en-US/docs/Web/API/Document
-*/
-/**
-* @typedef {Object} record
-* @property {string} identifier
-* @property {Date} timestamp
-* @property {boolean} [deleted]
-* @property {Document} [metadata]
-* @property {string[]} [setSpec] - An array of {@link set} specs
-*/
-
-/**
-* @typedef {Object} getRecordsResponse
-* @property {record[]} records - xxx
-* @property {flowControl} [flowControl]
-*/
-
-/**
-* @typedef {Object} getRecordsParameters
-* @property {string} metadataPrefix - A {@link metadataFormat} prefix
-* @property {Date} [from] - xxx
-* @property {Date} [until] - xxx
-* @property {string} [set] - A {@link set} spec
-* @property {string} [resumptionToken] - Optional resumption token to get the next partition of records
-*/
-
-/**
-* @typedef {Object} backendModule
-* @property {getCapabilities} getCapabilities - Get capabilities of the backend module
-* @property {getEarliestSupportedDate} getEarliestSupportedDate - Get the earliest date on which a record modification information is available
-* @property {getSets} getSets - Get the sets the backend supports
-* @property {getRecords} getRecords - xxx
-* @property {getIdentifiers} getIdentifiers - xxx
-* @property {getRecord} getRecord - xxx
-*/
 
 /**
 * Factory function to create a backend module
@@ -134,23 +119,18 @@ export function factory(options = {}) {
 		* @typedef {Object} capabilities
 		* @property {DELETED_RECORDS_SUPPORT} deletedRecordsSupport
 		* @property {HARVESTING_GRANULARITY} harvestingGranularity
+		* @property {Date} earliestDatestamp - Earliest record modification time available
 		*/
 		/**
 		* @typedef {function} getCapabilities
-		* @returns {capabilities} Backend's capabilities
+		* @returns {Promise<capabilities>} Backend's capabilities
 		*/
 		getCapabilities: () => {
-			return {
+			return Promise.resolve({
 				deletedRecordsSupport: DELETED_RECORDS_SUPPORT.NO,
-				harvestingGranularity: HARVESTING_GRANULARITY.DATE
-			};
-		},
-		/**
-		* @typedef {function} getEarliestSupportedDate
-		* @returns {Promise<Date>} The earliest supported modification of a record
-		*/
-		getEarliestSupportedDate: () => {
-			return Promise.resolve(new Date());
+				harvestingGranularity: HARVESTING_GRANULARITY.DATE,
+				earliestDatestamp: new Date()
+			});
 		},
 		/**
 		* @typedef {function} getRecord
@@ -182,6 +162,19 @@ export function factory(options = {}) {
 		getSets: (resumptionToken = undefined) => {
 			return Promise.reject(resumptionToken ? ERRORS.badResumptionToken : ERRORS.noSetHierarchy);
 		},
+		/**
+		* @typedef {Object} getRecordsResponse
+		* @property {record[]} records - xxx
+		* @property {flowControl} [flowControl]
+		*/
+		/**
+		* @typedef {Object} getRecordsParameters
+		* @property {string} metadataPrefix - A {@link metadataFormat} prefix
+		* @property {Date} [from] - xxx
+		* @property {Date} [until] - xxx
+		* @property {string} [set] - A {@link set} spec
+		* @property {string} [resumptionToken] - Optional resumption token to get the next partition of records
+		*/
 		/**
 		* @typedef {function} getIdentifiers
 		* @param {getRecordsParameters} parameters - xxx
