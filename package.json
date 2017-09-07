@@ -56,6 +56,9 @@
 		"babel-plugin-istanbul": "^4.0.0",
 		"codeclimate-test-reporter": "^0.5.0"
 	},
+	"peerDependencies": {
+		"@natlibfi/oai-pmh-server": "^1.0.0"
+	},
 	"xo": {
 		"rules": {      
 			"valid-jsdoc": ["error"],
