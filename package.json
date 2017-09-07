@@ -1,5 +1,5 @@
 {
-	"name": "oai-pmh-server-backend-module-prototype",
+	"name": "@natlibfi/oai-pmh-server-backend-module-prototype",
 	"description": "Backend module prototype for oai-pmh-server",
 	"author": {
 		"name": "The National Library of Finland"
@@ -31,7 +31,7 @@
 		"dev:check:watch": "chokidar source test -c 'npm run dev:check'",
 		"check-and-build": "npm run lint && npm test && npm run coverage && npm run build",
 		"travisci": "npm run check-and-build",
-		"publish-to-npm": "npm install && npm run lint && npm test && npm run coverage && npm publish"
+		"publish-to-npm": "npm install && npm run lint && npm test && npm run coverage && npm publish --access=public"
 	},
 	"dependencies": {
 		"babel-polyfill": "^6.23.0"
