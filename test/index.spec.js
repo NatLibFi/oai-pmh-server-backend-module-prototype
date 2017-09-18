@@ -43,7 +43,7 @@ describe('index', () => {
 	});
 
 	describe('#factory', () => {
-		var obj = testContext.factory();
+		const obj = testContext.factory();
 
 		it('Should return the expected object', () => {
 			expect(obj).to
