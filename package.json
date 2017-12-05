@@ -4,7 +4,15 @@
 	"author": {
 		"name": "The National Library of Finland"
 	},
-	"keywords": ["oai-pmh","harvest","marc","library","bibliography","bibliographic","archive"],
+	"keywords": [
+		"oai-pmh",
+		"harvest",
+		"marc",
+		"library",
+		"bibliography",
+		"bibliographic",
+		"archive"
+	],
 	"homepage": "https://github.com/natlibfi/oai-pmh-server-backend-module-prototype",
 	"bugs": {
 		"url": "https://github.com/natlibfi/oai-pmh-server-backend-module-prototype/issues"
@@ -15,71 +23,83 @@
 	},
 	"license": "AGPL-3.0+",
 	"version": "1.0.0",
-	"main": "./distribution/index.js",
+	"main": "./dist/index.js",
 	"scripts": {
-		"prepublish": "npm run build",
+		"prepublishOnly": "npm run build:transpile",
 		"lint": "xo --fix",
 		"test": "cross-env NODE_ENV=test nyc mocha --compilers js:babel-register",
 		"coverage": "nyc check-coverage",
-		"clean": "rimraf build coverage .nyc_output distribution doc",
-		"build:doc": "esdoc",
-		"build:transpile": "babel source --source-maps --out-dir=distribution --minified",
-		"build": "ncu && npm run build:transpile && npm run build:doc",
-		"dev:": "npm run clean && npm run lint && npm run build",		
-		"dev:check": "npm run clean && npm run lint && npm test;npm run coverage;npm run build",		
+		"clean": "rimraf build coverage .nyc_output dist",
+		"build:transpile": "babel source --source-maps --out-dir=dist --minified",
+		"build": "npm run build:transpile && ncu",
+		"dev": "npm run clean && npm run lint && npm run build",
+		"dev:check": "npm run clean && npm run lint && npm test;npm run coverage;npm run build",
 		"dev:watch": "chokidar source -c 'npm run dev'",
 		"dev:check:watch": "chokidar source test -c 'npm run dev:check'",
 		"check-and-build": "npm run lint && npm test && npm run coverage && npm run build",
 		"travisci": "npm run check-and-build",
 		"publish-to-npm": "npm install && npm run lint && npm test && npm run coverage && npm publish --access=public"
 	},
-	"dependencies": {
-		"babel-polyfill": "^6.23.0"
-	},
 	"devDependencies": {
-		"git-scripts": "^0.2.1",
-		"validate-commit": "^3.2.1",
-		"npm-check-updates": "^2.10.2",
-		"rimraf": "^2.5.4",
-		"mocha": "^3.2.0",
-		"xo": "^0.18.2",    
-		"istanbul": "^0.4.5",
-		"chai": "^4.1.2",
-		"nyc": "^11.2.1",
-		"esdoc": "^1.0.2",
-		"cross-env": "^5.0.5",
-		"chokidar-cli": "^1.2.0",
 		"babel-cli": "^6.22.2",
-		"babel-preset-latest": "^6.22.0",
-		"babel-register": "^6.22.0",
-		"babel-polyfill": "^6.22.0",
 		"babel-plugin-istanbul": "^4.0.0",
-		"codeclimate-test-reporter": "^0.5.0"
+		"babel-preset-env": "^1.6.1",
+		"chai": "^4.1.2",
+		"chokidar-cli": "^1.2.0",
+		"codeclimate-test-reporter": "^0.5.0",
+		"cross-env": "^5.1.1",
+		"git-scripts": "^0.2.1",
+		"istanbul": "^0.4.5",
+		"mocha": "^3.2.0",
+		"npm-check-updates": "^2.10.2",
+		"nyc": "^11.2.1",
+		"rimraf": "^2.5.4",
+		"validate-commit": "^3.2.1",
+		"xo": "^0.18.2"
 	},
 	"peerDependencies": {
-		"@natlibfi/oai-pmh-server": "^1.0.0"
+		"@natlibfi/oai-pmh-server": "^file://../oai-pmh-server"
+	},
+	"engines": {
+		"node": ">=7"
 	},
 	"xo": {
-		"rules": {      
-			"valid-jsdoc": ["error"],
-			"prefer-arrow-callback": ["error"]
+		"rules": {
+			"valid-jsdoc": [
+				"error"
+			],
+			"prefer-arrow-callback": [
+				"error"
+			]
 		}
 	},
-	"esdoc": {
-		"source": "source",    
-		"destination": "./doc"
-	},
 	"babel": {
-		"presets": ["latest"],
+		"presets": [
+			[
+				"env",
+				{
+					"targets": {
+						"node": "7"
+					}
+				}
+			]
+		],
 		"env": {
 			"test": {
-				"plugins": ["istanbul"]
+				"plugins": [
+					"istanbul"
+				]
 			}
 		}
 	},
 	"nyc": {
-		"reporter": ["lcov", "html"],
-		"require": ["babel-register"],
+		"reporter": [
+			"lcov",
+			"html"
+		],
+		"require": [
+			"babel-register"
+		],
 		"sourceMap": false,
 		"instrument": false,
 		"lines": 100,

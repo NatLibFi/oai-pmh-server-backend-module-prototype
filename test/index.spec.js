@@ -31,7 +31,7 @@
 'use strict';
 
 import {expect} from 'chai';
-import * as testContext from '../source/index';
+import * as testContext from '../src/index';
 
 describe('index', () => {
 	it('Should export the expected members', () => {

@@ -77,8 +77,6 @@
 
 'use strict';
 
-import 'babel-polyfill'; // eslint-disable-line import/no-unassigned-import
-
 export const HARVESTING_GRANULARITY = {
 	DATE: 0,
 	DATETIME: 1
@@ -105,6 +103,14 @@ export const METADATA_FORMAT_DC = {
 	prefix: 'oai_dc',
 	schema: 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd',
 	namespace: 'http://www.openarchives.org/OAI/2.0/oai_dc/'
+};
+/**
+* @type {metadataFormat}
+*/
+export const METADATA_FORMAT_MARC21 = {
+	prefix: 'marc21',
+	schema: 'http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd',
+	namespace: 'http://www.loc.gov/MARC21/slim'
 };
 
 /**
