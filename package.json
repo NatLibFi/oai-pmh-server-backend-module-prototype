@@ -30,12 +30,12 @@
 		"test": "cross-env NODE_ENV=test nyc mocha --compilers js:babel-register",
 		"coverage": "nyc check-coverage",
 		"clean": "rimraf build coverage .nyc_output dist",
-		"build:transpile": "babel source --source-maps --out-dir=dist --minified",
+		"build:transpile": "babel src --source-maps --out-dir=dist --minified",
 		"build": "npm run build:transpile && ncu",
 		"dev": "npm run clean && npm run lint && npm run build",
 		"dev:check": "npm run clean && npm run lint && npm test;npm run coverage;npm run build",
-		"dev:watch": "chokidar source -c 'npm run dev'",
-		"dev:check:watch": "chokidar source test -c 'npm run dev:check'",
+		"dev:watch": "chokidar src -c 'npm run build:transpile'",
+		"dev:check:watch": "chokidar src test -c 'npm run dev:check'",
 		"check-and-build": "npm run lint && npm test && npm run coverage && npm run build",
 		"travisci": "npm run check-and-build",
 		"publish-to-npm": "npm install && npm run lint && npm test && npm run coverage && npm publish --access=public"
@@ -54,7 +54,6 @@
 		"npm-check-updates": "^2.10.2",
 		"nyc": "^11.2.1",
 		"rimraf": "^2.5.4",
-		"validate-commit": "^3.2.1",
 		"xo": "^0.18.2"
 	},
 	"peerDependencies": {
@@ -106,10 +105,5 @@
 		"statements": 100,
 		"functions": 100,
 		"branches": 100
-	},
-	"git": {
-		"scripts": {
-			"commit-msg": "./node_modules/.bin/validate-commit-msg -p atom $1"
-		}
 	}
 }
